@@ -1,5 +1,5 @@
 const Products = require('../models/productModel');
-
+const Categories = require('../models/categoryModel');
 //filter, sorting and paginating
 
 class APIfeatures {
@@ -80,9 +80,11 @@ const productCtrl = {
     },
     createProduct: async (req, res) => {
         try {
-            const { product_id, title, price, description, content, images, category } = req.body;
+            const { product_id, title, price, description, images, category } = req.body;
 
             if (!images) return res.status(400).json({ msg: 'Ảnh không được tải lên' });
+
+            const categoryItem = await Categories.findOne({ _id: category });
 
             const product = await Products.findOne({ product_id });
             if (product) return res.status(400).json({ msg: 'Sản phẩm đã tồn tại.' });
@@ -92,13 +94,13 @@ const productCtrl = {
                 title: title.toLowerCase(),
                 price,
                 description,
-                content,
                 images,
                 category,
+                category_name: categoryItem.name,
             });
 
             await newProduct.save();
-            res.json({ msg: 'Tạo mới sản phẩm' });
+            res.json({ msg: 'Thêm thành công' });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -107,14 +109,16 @@ const productCtrl = {
         try {
             await Products.findByIdAndDelete(req.params.id);
 
-            res.json({ msg: 'Xóa sản phẩm' });
+            res.json({ msg: 'Xóa thành công' });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
     },
     updateProduct: async (req, res) => {
         try {
-            const { title, price, description, content, images, category } = req.body;
+            const { title, price, description, images, category } = req.body;
+
+            const categoryItem = await Categories.findOne({ _id: category });
 
             if (!images) return res.status(400).json({ msg: 'Không có ảnh tải lên' });
 
@@ -124,9 +128,9 @@ const productCtrl = {
                     title: title.toLowerCase(),
                     price,
                     description,
-                    content,
                     images,
                     category,
+                    category_name: categoryItem.name,
                 }
             );
 

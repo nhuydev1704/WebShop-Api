@@ -133,6 +133,7 @@ app.get('/getcookie', (req, res) => {
 ///Routes
 app.use('/user', require('./routes/userRouter'));
 app.use('/api', require('./routes/categoryRouter'));
+app.use('/api', require('./routes/chatBotRouter'));
 app.use('/api', require('./routes/upload'));
 app.use('/api', require('./routes/productRouter'));
 app.use('/api', require('./routes/paymentRouter'));

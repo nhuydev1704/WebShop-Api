@@ -59,9 +59,19 @@ const userCtrl = {
                 password,
             });
 
+            // function start(io) {
+            //     io.on('connection', function (socket) {
+            //         socket.emit('createNotification', {
+            //             name,
+            //             action: 'register',
+            //             createdAt: new Date(),
+            //         });
+            //     });
+            // }
+
             await newUser.save();
 
-            res.json({ msg: 'Tài khoản đã được xác thực!' });
+            res.json({ newUser, msg: 'Tài khoản đã được xác thực!' });
         } catch (err) {
             return res.status(500).json({ msg: err.message });
         }
@@ -167,14 +177,23 @@ const userCtrl = {
     },
     updateUser: async (req, res) => {
         try {
-            const { name, avatar } = req.body;
-            await Users.findOneAndUpdate(
-                { _id: req.user.id },
-                {
-                    name,
-                    avatar,
-                }
-            );
+            const { name, avatar, info_ship } = req.body;
+            if (info_ship) {
+                await Users.findOneAndUpdate(
+                    { _id: req.user.id },
+                    {
+                        info_ship,
+                    }
+                );
+            } else {
+                await Users.findOneAndUpdate(
+                    { _id: req.user.id },
+                    {
+                        name,
+                        avatar,
+                    }
+                );
+            }
 
             res.json({ msg: 'Cập nhật thành công!' });
         } catch (err) {

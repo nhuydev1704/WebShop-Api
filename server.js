@@ -29,6 +29,8 @@ const io = require('socket.io')(http, {
     },
 });
 
+// const userController = require('./controllers/userCtrl');
+// userController.start(io);
 //soketio
 let users = [];
 io.on('connection', (socket) => {
@@ -94,9 +96,9 @@ io.on('connection', (socket) => {
             createdAt,
         });
 
-        await newNoti.save();
-
         io.emit('sendNotiToClient', newNoti);
+
+        await newNoti.save();
     });
 
     socket.on('disconnect', () => {
@@ -139,6 +141,7 @@ app.use('/api', require('./routes/productRouter'));
 app.use('/api', require('./routes/paymentRouter'));
 app.use('/api', require('./routes/commentRouter'));
 app.use('/api', require('./routes/notificationRouter'));
+app.use('/api', require('./routes/ganttRouter'));
 
 //Ket noi toi mongodb
 

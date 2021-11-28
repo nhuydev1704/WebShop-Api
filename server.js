@@ -132,6 +132,7 @@ app.get('/getcookie', (req, res) => {
     console.log(req.cookies);
     res.send(req.cookies);
 });
+
 ///Routes
 app.use('/user', require('./routes/userRouter'));
 app.use('/api', require('./routes/categoryRouter'));
@@ -142,6 +143,7 @@ app.use('/api', require('./routes/paymentRouter'));
 app.use('/api', require('./routes/commentRouter'));
 app.use('/api', require('./routes/notificationRouter'));
 app.use('/api', require('./routes/ganttRouter'));
+app.use('/api', require('./routes/employeeRouter'));
 
 //Ket noi toi mongodb
 
